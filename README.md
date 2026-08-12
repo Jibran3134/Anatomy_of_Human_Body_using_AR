@@ -11,7 +11,7 @@ The project uses **Unity** and **Vuforia Engine** to provide an AR-based interac
 Before running the project, install:
 
 * **Unity Hub**
-* The **exact Unity Editor version used by this project**
+* The **exact Unity Editor version used by this project** 6000.5.7f1
 * **Git**
 * **Git LFS**
 
