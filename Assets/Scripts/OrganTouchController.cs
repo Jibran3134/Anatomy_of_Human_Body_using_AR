@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class OrganTouchController : MonoBehaviour
 {
+	public Transform targetOrgan;
 	public float minScaleMultiplier = 0.3f;
 	public float maxScaleMultiplier = 3f;
 	public float rotationSpeed = 0.5f;
@@ -15,7 +16,8 @@ public class OrganTouchController : MonoBehaviour
 
 	void Start()
 	{
-		baseScale = transform.localScale;
+		if (targetOrgan == null) targetOrgan = transform;
+		baseScale = targetOrgan.localScale;
 	}
 
 	void Update()
@@ -43,14 +45,14 @@ public class OrganTouchController : MonoBehaviour
 			if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform.IsChildOf(transform))
 			{
 				dragging = true;
-				Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-				dragOffset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, screenPoint.z));
+				Vector3 screenPoint = Camera.main.WorldToScreenPoint(targetOrgan.position);
+				dragOffset = targetOrgan.position - Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, screenPoint.z));
 			}
 		}
 		else if (dragging && touch.phase == TouchPhase.Moved)
 		{
-			Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-			transform.position = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, screenPoint.z)) + dragOffset;
+			Vector3 screenPoint = Camera.main.WorldToScreenPoint(targetOrgan.position);
+			targetOrgan.position = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, screenPoint.z)) + dragOffset;
 		}
 		else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
 		{
@@ -67,7 +69,7 @@ public class OrganTouchController : MonoBehaviour
 		if (t0.phase == TouchPhase.Began || t1.phase == TouchPhase.Began)
 		{
 			pinchStartDistance = currentDistance;
-			pinchStartScale = transform.localScale;
+			pinchStartScale = targetOrgan.localScale;
 			lastPinchAngle = currentAngle;
 			return;
 		}
@@ -77,11 +79,11 @@ public class OrganTouchController : MonoBehaviour
 			float factor = currentDistance / pinchStartDistance;
 			Vector3 targetScale = pinchStartScale * factor;
 			float multiplier = Mathf.Clamp(targetScale.x / baseScale.x, minScaleMultiplier, maxScaleMultiplier);
-			transform.localScale = baseScale * multiplier;
+			targetOrgan.localScale = baseScale * multiplier;
 		}
 
 		float deltaAngle = Mathf.DeltaAngle(lastPinchAngle, currentAngle);
-		transform.Rotate(Vector3.up, -deltaAngle * rotationSpeed, Space.World);
+		targetOrgan.Rotate(Vector3.up, -deltaAngle * rotationSpeed, Space.World);
 		lastPinchAngle = currentAngle;
 	}
 }
