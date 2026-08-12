@@ -5,6 +5,10 @@ An Augmented Reality (AR) application developed with Unity for exploring and vis
 The project uses **Unity** and **Vuforia Engine** to provide an AR-based interactive visualization of human organs and anatomical structures.
 
 ---
+## Demo Video
+
+https://github.com/user-attachments/assets/1ecee3a9-6c0b-4d40-9202-30c6928e7473
+
 
 ## 📋 Requirements
 
